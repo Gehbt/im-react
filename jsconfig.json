@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "module": "ES6",
+        "moduleResolution": "bundler",
+        "target": "ES2020",
+        "strict": true,
+        "checkJs": true,
+        "esModuleInterop":true,
+        "jsx": "preserve",
+        "allowSyntheticDefaultImports": true,
+        "allowArbitraryExtensions": true,
+        "allowImportingTsExtensions": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": false,
+        "alwaysStrict": true,
+        "noImplicitAny": false
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}
