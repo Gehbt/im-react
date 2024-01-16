@@ -1,4 +1,4 @@
-import App from "./App.jsx";
-import { IMReactDOM } from "./core/im-react-dom.js";
+import App from "./App";
+import { IMReactDOM } from "~core/im-react-dom";
 
 IMReactDOM.createRoot(document.querySelector("#root")).render(App);
