@@ -1,16 +1,20 @@
-import { render } from './im-react.js'
-export const IMReactDOM = {
+import { render as IMRender } from "./im-react";
+/**
+ * @typedef {import("react")} React - 只是配合
+ */
+
+/**
+ * @param {HTMLElement} container
+ */
+const createRoot = (container) => ({
   /**
-   * @param {HTMLElement} container
+   * @param {React.JSX.Element} App
    */
-  createRoot(container) {
-    return {
-      /**
-       * @param {import("react").JSX.Element} App
-       */
-      render(App) {
-        render(App, container);
-      },
-    };
+  render(App) {
+    IMRender(App, container); // eslint-disable-line new-cap
   },
+});
+const IMReactDOM = {
+  createRoot,
 };
+export default IMReactDOM;
