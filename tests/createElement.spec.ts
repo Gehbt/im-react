@@ -1,5 +1,7 @@
+// @vitest-environment jsdom
 import { describe, expect, it } from "vitest";
 import { createElement } from "~core/im-react";
+
 describe("createElement", () => {
   it("should return vdom element no props", () => {
     const element = createElement("div", null, "hello");
@@ -21,6 +23,7 @@ describe("createElement", () => {
     `);
   });
   it("should return vdom element with props", () => {
+    // <div id="root">hello</div>;
     const element = createElement("div", { id: "root" }, "hello");
     expect(element).toMatchInlineSnapshot(/* json */ `
       {

@@ -1,4 +1,4 @@
-import { Hypotenuse, Hypotenuse2 } from "@/components/custom_jsx";
+// import { Hypotenuse, Hypotenuse2 } from "../examples/custom_jsx.jsx";
 
 const App = <div id="app">Hi trans by vite</div>;
 // console.log("jsx Hypotenuse", <Hypotenuse a={3} b={4} />);
