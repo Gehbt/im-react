@@ -18,6 +18,12 @@ module.exports = {
     "capitalized-comments": "off",
     "no-unused-vars": "off",
     "operator-linebreak": "off",
+    // comment
+    "spaced-comment": [
+      "error",
+      "always",
+      { markers: ["@__PURE__", "@__NO_SIDE_EFFECTS__"] },
+    ],
     // jsx
     "jsx-quotes": ["error", "prefer-double"],
     // ts
@@ -27,5 +33,6 @@ module.exports = {
     "@typescript-eslint/no-unsafe-call": "off",
     "@typescript-eslint/no-unsafe-argument": "off",
     "import/no-duplicates": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
   },
 };

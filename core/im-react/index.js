@@ -1,172 +1,109 @@
-/**
- * @typedef {{type: string; props: {[x: string]: any; children:IMElement[]}}} IMElement
- * @typedef {{[x: string]: any; id: string} | null} InitPropType
- * @typedef {(type: string, initProps: InitPropType, ...children: IMElement[] | string[])=>IMElement}  ElementRenderFn
- */
-/**
- * @type {ElementRenderFn} createElement
- */
-export function createElement(type, initProps, ...children) {
-  return {
-    type,
-    props: {
-      ...initProps,
-      children: children.map((/** @type {IMElement | string} */ child) =>
-        typeof child === "string" ? createTextNode(child) : child,
-      ),
-    },
-  };
-}
+export { createElement } from "./createElement.js";
 
-/**
- * @param {string} text
- * @return {IMElement}
- */
-function createTextNode(text) {
-  return {
-    type: "TEXT_ELEMENT",
-    props: {
-      nodeValue: text,
-      children: [],
-    },
-  };
-}
+export { fiberRender as render } from "./fiber.js";
 
-/**
- * @param { IMElement } el
- * @param { HTMLElement } container
- */
-export function render(el, container) {
-  nextFiberUnit = {
-    dom: container,
-    type: "div",
-    props: {
-      children: [el],
-    },
-  };
-}
+// function render(element, container) {
+//   wipRoot = {
+//     dom: container,
+//     props: {
+//       children: [element],
+//     },
+//   };
+//   nextUnitOfWork = wipRoot;
+// }
 
-// 看起来像前序遍历
-/**
- * @type { VdomTreeElement | null} type - description
- */
-let nextFiberUnit = null;
-let taskId = 1;
-/** @type {number | undefined} type - description */
-let idleCB;
-/**
- * @param {IdleDeadline} deadline
- */
-function fiberLoop(deadline) {
-  // console.log(deadline.timeRemaining());
-  taskId++;
-  let shouldYield = false;
-  while (!shouldYield && nextFiberUnit) {
-    console.log("task", taskId, "timeRemaining", deadline.timeRemaining());
+// let nextUnitOfWork = null;
+// let wipRoot = null;
 
-    const preform = preformFiberUnit(nextFiberUnit);
-    if (preform) {
-      nextFiberUnit = preform;
-    }
+// function workLoop(deadline) {
+//   let shouldYield = false;
+//   while (nextUnitOfWork && !shouldYield) {
+//     nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+//     shouldYield = deadline.timeRemaining() < 1;
+//   }
 
-    shouldYield = deadline.timeRemaining() < 1;
-  }
+//   if (!nextUnitOfWork && wipRoot) {
+//     commitRoot();
+//   }
 
-  // if (!nextFiberUnit) {
-  //   if (idleCB) {
-  //     cancelIdleCallback(idleCB);
-  //   }
-  //   return;
-  // }
-  idleCB = window.requestIdleCallback(fiberLoop);
-}
+//   requestIdleCallback(workLoop);
+// }
 
-/**
- * @param {string} type
- * @return {HTMLElement} description
- */
-function createDom(type) {
-  return type === "TEXT_ELEMENT"
-    ? /** @type {*} */ (document.createTextNode(""))
-    : document.createElement(type);
-}
+// requestIdleCallback(workLoop);
+// let deletions = null;
+// let currentRoot = null;
+// function commitRoot() {
+//   deletions.forEach(commitWork);
+//   commitWork(wipRoot.child);
+//   currentRoot = wipRoot;
+//   wipRoot = null;
+// }
 
-/**
- * @param {{ [x: string]: any; }} dom
- * @param {{ [x: string]: any; }} props
- */
-function updateProps(dom, props) {
-  Object.keys(props).forEach((key) => {
-    if (key !== "children") {
-      dom[key] = props[key];
-    }
-  });
-}
-/**
- * @typedef {{
- *    dom: HTMLElement | null,
- *    parent?: VdomTreeElement | null,
- *    sibling?: VdomTreeElement | null,
- *    child?: VdomTreeElement | null,
- *  } & IMElement} VdomTreeElement
- */
+// function commitWork(fiber) {
+//   if (!fiber) {
+//     return;
+//   }
 
-/**
- * 插入队列
- * @param { VdomTreeElement } fiber
- */
-function initChildren(fiber) {
-  const children = fiber.props.children;
-  let prevChild = null;
-  children.forEach((child, /** @type {number} */ index) => {
-    const newFiber = {
-      type: child.type,
-      props: child.props,
-      dom: null,
-      parent: fiber,
-      sibling: null,
-      child: null,
-    };
-    if (index === 0) {
-      fiber.child = newFiber;
-    } else {
-      prevChild.sibling = newFiber;
-    }
+//   let domParentFiber = fiber.parent;
+//   while (!domParentFiber.dom) {
+//     domParentFiber = domParentFiber.parent;
+//   }
 
-    prevChild = newFiber;
-  });
-}
+//   const domParent = domParentFiber.dom;
 
-/**
- * 渲染 FiberUnit
- * @param { VdomTreeElement } fiber
- */
-function preformFiberUnit(fiber) {
-  if (!fiber.dom) {
-    // 创建 dom
-    fiber.dom = createDom(fiber.type);
-    const toDom = fiber.dom;
-    fiber.parent?.dom?.append(toDom);
-    // 处理 props
-    updateProps(toDom, fiber.props);
-  }
+//   if (fiber.effectTag === "PLACEMENT" && fiber.dom != null) {
+//     domParent.append(fiber.dom);
+//   } else if (fiber.effectTag === "UPDATE" && fiber.dom != null) {
+//     updateDom(fiber.dom, fiber.alternate.props, fiber.props);
+//   } else if (fiber.effectTag === "DELETION") {
+//     commitDeletion(fiber, domParent);
+//   }
 
-  // 转换链表，设置指针
-  initChildren(fiber);
+//   commitWork(fiber.child);
+//   commitWork(fiber.sibling);
+// }
 
-  // 返回下一个任务，子级
-  if (fiber.child) {
-    return fiber.child;
-  }
+// function performUnitOfWork(fiber) {
+//   fiber.dom ||= createDom(fiber);
 
-  // 同级
-  if (fiber.sibling) {
-    return fiber.sibling;
-  }
+//   if (fiber.parent) {
+//     fiber.parent.dom.append(fiber.dom);
+//   }
 
-  return fiber.parent?.sibling;
-}
+//   const elements = fiber.props.children;
+//   let index = 0;
+//   let prevSibling = null;
 
-// if (requestIdleCallback) {
-//   requestIdleCallback(fiberLoop);
+//   while (index < elements.length) {
+//     const element = elements[index];
+
+//     const newFiber = {
+//       type: element.type,
+//       props: element.props,
+//       parent: fiber,
+//       dom: null,
+//     };
+
+//     if (index === 0) {
+//       fiber.child = newFiber;
+//     } else {
+//       prevSibling?.sibling = newFiber;
+//     }
+
+//     prevSibling = newFiber;
+//     index++;
+//   }
+
+//   if (fiber.child) {
+//     return fiber.child;
+//   }
+
+//   let nextFiber = fiber;
+//   while (nextFiber) {
+//     if (nextFiber.sibling) {
+//       return nextFiber.sibling;
+//     }
+
+//     nextFiber = nextFiber.parent;
+//   }
 // }

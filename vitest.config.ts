@@ -7,7 +7,7 @@ export default mergeConfig(
   defineConfig({
     test: {
       alias,
-      globals: true, // config vitest/globals
+      globals: true, // config types: "vitest/globals"
       reporters: ["verbose"],
     },
   }),

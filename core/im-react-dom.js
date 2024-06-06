@@ -1,6 +1,6 @@
 import { render as IMRender } from "./im-react";
 /**
- * @typedef {import("react")} React - 只是配合
+ * @typedef {import("react")} React - 只是作为命名缩短
  */
 
 /**
@@ -17,4 +17,14 @@ const createRoot = (container) => ({
 const IMReactDOM = {
   createRoot,
 };
+/**
+ * @param {string} type
+ * @return {HTMLElement}
+ */
+export function createDom(type) {
+  return type === "TEXT_ELEMENT"
+    ? /** @type {*} */ (document.createTextNode(""))
+    : document.createElement(type);
+}
+
 export default IMReactDOM;

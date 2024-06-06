@@ -2,10 +2,16 @@
   "cSpell.words": [
     "camelcase",
     "IMDOM",
+    "indep",
     "linebreak",
     "Vdom"
   ],
   "editor.formatOnSave": true,
+  "xo.enable": true,
+  "xo.format.enable": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "typescript.tsdk": "node_modules\\typescript\\lib"
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
 }

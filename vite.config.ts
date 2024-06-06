@@ -21,9 +21,15 @@ export default defineConfig({
     alias,
   },
   build: {
+    assetsDir: "assets",
+    assetsInlineLimit: 4096,
     minify: false,
+    reportCompressedSize: true,
+    sourcemap: true,
+    rollupOptions: {},
   },
   esbuild: {
+    jsxFragment: "Fragment",
     jsxFactory: "createElement",
     jsxInject: `import { createElement } from '~core/im-react'`,
     jsxImportSource: "~core/im-react",

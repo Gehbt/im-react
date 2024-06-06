@@ -2,23 +2,26 @@
   "name": "im-react",
   "version": "0.1.0",
   "description": "",
+  "type": "module",
   "main": "./src/index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "xo && vitest",
+    "test": "vitest --run",
+    "lint": "xo --fix",
     "coverage": "vitest run --coverage"
   },
   "author": "rg",
   "license": "MIT",
   "dependencies": {
     "esbuild": "^0.21.4",
-    "eslint": "^9.3.0",
-    "eslint-plugin-react": "^7.34.2",
-    "eslint-plugin-react-hooks": "^4.6.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "vite": "^5.2.11"
   },
   "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "@types/node": "^20.12.12",
     "@vitest/ui": "^1.6.0",
     "eslint-config-react": "^1.1.7",
@@ -26,7 +29,10 @@
     "jsdom": "^24.1.0",
     "typescript": "^5.4.5",
     "vitest": "^1.6.0",
-    "xo": "^0.58.0"
+    "xo": "^0.58.0",
+    "eslint": "^9.3.0",
+    "eslint-plugin-react": "^7.34.2",
+    "eslint-plugin-react-hooks": "^4.6.2"
   },
   "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447",
   "eslintConfig": {
