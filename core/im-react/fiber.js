@@ -31,13 +31,13 @@ let nextFiberUnit;
 /** ************************* */
 
 /**
+ * export only test
  * @param {number} timeRemaining
  * @return {void}
  * ## fiber 转换
  * 看起来像前序遍历
  */
-function fiberLoop(timeRemaining) {
-  taskId += 1;
+export function fiberLoop(timeRemaining) {
   let shouldYield = false;
   // 必须有后一项
   while (!shouldYield && nextFiberUnit) {
@@ -48,6 +48,8 @@ function fiberLoop(timeRemaining) {
 
     shouldYield = timeRemaining < 1;
   }
+
+  taskId += 1;
 
   window.requestIdleCallback((d) => fiberLoop(d.timeRemaining()));
 }

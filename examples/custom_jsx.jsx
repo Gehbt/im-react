@@ -1,9 +1,8 @@
-// @ts-nocheck
 // # JSX v1: `Render(TagName, props, ...children)`
 /** @jsx calc_jsx */
 function calc_jsx( // eslint-disable-line camelcase
-  /** @type {(...args: any[]) => any}  */ operation,
-  /** @type {*} props */ props,
+  /** @type {(...args: *[]) => ?}  */ operation,
+  /** @type {?} props */ props,
   /** @type {*[]} slots */ ...args
 ) {
   let params = props ? [props] : [null];
@@ -28,7 +27,8 @@ const Sqrt = (props, x) => Math.sqrt(x);
  */
 const Sum = (props, ...args) =>
   // console.log("props", props, "typeof props", typeof props);
-  args?.reduce((a, b) => (a ?? 0) + b);
+  args.reduce((a, b) => (a ?? 0) + b);
+
 /**
  * Calculate the power of a base to the given exponent.
  * @param {{exponent: number, children?: unknown}} props - The object containing the exponent and any additional children.
@@ -37,19 +37,23 @@ const Sum = (props, ...args) =>
  */
 const Pow = ({ exponent }, base) => (base ?? 0) ** exponent;
 
+// ==========================================================
 /**
  *
  * @param {{a: number, b:number}} props
  * @returns {number}
  */
-export const Hypotenuse = ({ a, b }) => (
-  <Sqrt>
-    <Sum>
-      <Pow exponent={2}>{a}</Pow>
-      <Pow exponent={2}>{b}</Pow>
-    </Sum>
-  </Sqrt>
-);
+export const Hypotenuse = ({ a, b }) =>
+  /** @type {*} 把 jsx 默认的类型消除 */ (
+    (
+      <Sqrt>
+        <Sum>
+          <Pow exponent={2}>{a}</Pow>
+          <Pow exponent={2}>{b}</Pow>
+        </Sum>
+      </Sqrt>
+    )
+  );
 
 // console.log("jsx Hypotenuse", <Hypotenuse a={3} b={4} />);
 
@@ -57,13 +61,16 @@ export const Hypotenuse = ({ a, b }) => (
  * @param {{values: number[]}} props
  * @returns {number}
  */
-export const Hypotenuse2 = (/** @type {{values: number[]}} */ { values }) => (
-  <Sum>
-    {values.map((v) => (
-      <Pow exponent={2}>{v}</Pow>
-    ))}
-  </Sum>
-);
+export const Hypotenuse2 = (/** @type {{values: number[]}} */ { values }) =>
+  /** @type {*} 把 jsx 默认的类型消除 */ (
+    (
+      <Sum>
+        {values.map((v) => (
+          <Pow exponent={2}>{v}</Pow>
+        ))}
+      </Sum>
+    )
+  );
 // console.log("jsx Pow2", <Pow exponent={2}>4</Pow>);
 // console.log("jsx Hypotenuse2", <Hypotenuse2 values={[6, 8]} />);
 
