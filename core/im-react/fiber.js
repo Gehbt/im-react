@@ -1,57 +1,102 @@
-import { createDom } from "../im-react-dom.js";
+import { createDom } from "../im-react-dom/create-dom.js";
+import { Renderer } from "./shared.js";
+/**
+ * 不用 `@import` 的原因是 现在 code(v1.91.1) 还没完全支持高亮
+ * `@import { Renderer } from "./shared.js";`
+ */
 /**
  * @typedef {{type: string; props: {[x: string]: any; children:IMElement[]}}} IMElement
  */
 
 /**
- * @param { IMElement } el
- * @param { HTMLElement } container
- * @return {void}
- * bridge IMElement render to HTMLElement
- */
-export function fiberRender(el, container) {
-  nextFiberUnit = {
-    dom: container,
-    type: "div",
-    props: {
-      children: [el],
-    },
-  };
-  // 启动渲染
-  window.requestIdleCallback((d) => fiberLoop(d.timeRemaining()));
-}
-
-/** ************************* */
-// 全局变量
-let taskId = 1;
-/**
- * @type {VDomElementTree | undefined}
- */
-let nextFiberUnit;
-/** ************************* */
-
-/**
+ * Scheduler（调度器）—— 调度任务的优先级，高优任务优先进入 Reconciler；
  * export only test
+ * @param {Renderer} renderer
  * @param {number} timeRemaining
  * @return {void}
  * ## fiber 转换
+ *
  * 看起来像前序遍历
  */
-export function fiberLoop(timeRemaining) {
+export function fiberLoop(renderer, timeRemaining) {
   let shouldYield = false;
   // 必须有后一项
-  while (!shouldYield && nextFiberUnit) {
+  while (!shouldYield && renderer.nextFiberUnit) {
     // task
-    /*@__PURE__*/ console.log("task", taskId, "timeRemaining", timeRemaining);
-
-    nextFiberUnit = preformFiberUnit(nextFiberUnit);
-
+    /*@__PURE__*/ console.log(
+      "task",
+      renderer.taskId,
+      "timeRemaining",
+      timeRemaining,
+    );
+    renderer.nextFiberUnit = preformFiberUnit(renderer.nextFiberUnit);
     shouldYield = timeRemaining < 1;
   }
 
-  taskId += 1;
+  renderer.taskId += 1; // 下一个任务
+  if (!renderer.nextFiberUnit && renderer.root) {
+    // 统一提交
+    commitRoot(renderer);
+  }
 
-  window.requestIdleCallback((d) => fiberLoop(d.timeRemaining()));
+  const ric = window.requestIdleCallback((d) => {
+    fiberLoop(renderer, d.timeRemaining());
+  });
+  window.cancelIdleCallback(ric);
+}
+
+/**
+ * Renderer（渲染器）—— 负责将变化的组件渲染到页面上。
+ * @param {VDomElementTreeNode} fiber
+ * @return {VDomElementTreeNode | undefined}
+ * ## 渲染 FiberUnit
+ */
+function preformFiberUnit(fiber) {
+  if (!fiber.dom) {
+    // 1 创建 dom
+    fiber.dom = createDom(fiber.type);
+    // 逐次提交
+    // fiber.parent?.dom?.append(fiber.dom);
+
+    // 2 处理 props
+    updateProps(fiber.dom, fiber.props);
+  }
+
+  // 3 转换 child 链表，设置指针
+  initChildren(fiber);
+
+  // 4 返回下一个任务，子级
+  // 如果有 child，就返回 child fiber
+  if (fiber.child) {
+    return fiber.child;
+  }
+
+  if (fiber.sibling) {
+    return fiber.sibling;
+  }
+
+  return fiber.parent?.sibling;
+}
+
+/**
+ * @param {Renderer} renderer
+ * @return {void}
+ */
+function commitRoot(renderer) {
+  commitFiber(renderer.root?.child);
+  renderer.root = undefined;
+  /**
+   * @param {VDomElementTreeNode | undefined} _fiber
+   */
+  function commitFiber(_fiber) {
+    if (!_fiber) {
+      return;
+    }
+
+    _fiber.parent?.dom?.append(/** @type {Node} */ (_fiber.dom));
+    commitFiber(_fiber.child);
+    commitFiber(_fiber.sibling);
+  }
 }
 
 /**
@@ -66,27 +111,19 @@ const updateProps = (dom, props) => {
     }
   });
 };
-/**
- * @typedef {{
- *    dom: HTMLElement | undefined,
- *    parent?: VDomElementTree,
- *    sibling?: VDomElementTree,
- *    child?: VDomElementTree,
- *  } & IMElement} VDomElementTree
- * @desc parent 为 undefined 表示根
- */
 
 /**
- * @param { VDomElementTree } fiber
+ * Reconciler（协调器）—— 负责找出变化的组件：更新工作从递归变成了可以中断的循环过程。Reconciler 内部采用了 Fiber 的架构；
+ * @param { VDomElementTreeNode } fiber
  * @return {void}
  * ## 插入队列
  */
 function initChildren(fiber) {
   const children = fiber.props.children;
-  /** @type {VDomElementTree | undefined} prevChild */
+  /** @type {VDomElementTreeNode | undefined} prevChild */
   let prevChild;
   children.forEach((child, index) => {
-    /** @type {VDomElementTree} newFiber */
+    /** @type {VDomElementTreeNode} newFiber */
     const newFiber = {
       type: child.type,
       props: child.props,
@@ -105,29 +142,4 @@ function initChildren(fiber) {
 
     prevChild = newFiber;
   });
-}
-
-/**
- * @param {VDomElementTree} fiber
- * @return {VDomElementTree | undefined}
- * ## 渲染 FiberUnit
- */
-function preformFiberUnit(fiber) {
-  if (!fiber.dom) {
-    // 1 创建 dom
-    fiber.dom = createDom(fiber.type);
-    fiber.parent?.dom?.append(fiber.dom);
-
-    // 2 处理 props
-    updateProps(fiber.dom, fiber.props);
-  }
-
-  // 3 转换 child 链表，设置指针
-  initChildren(fiber);
-
-  // 4 返回下一个任务，子级
-  // 如果有 child，就返回 child fiber
-  if (fiber.child) {
-    return fiber.child;
-  }
 }
