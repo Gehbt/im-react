@@ -1,4 +1,6 @@
 /* eslint-disable unicorn/prefer-query-selector */
+// import React from "react";
+// import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import IMReactDOM from "~core/im-react-dom";
 
@@ -11,4 +13,4 @@ const root =
     return div;
   })();
 // to html
-IMReactDOM.createRoot(root).render(App);
+IMReactDOM.createRoot(root).render(<App />);

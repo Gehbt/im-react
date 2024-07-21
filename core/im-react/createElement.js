@@ -3,16 +3,19 @@
  *    element 的 children 在 props 里，
  *    而 renderFn 的 children 同级
  */
+
 /**
- * ### create some IMElement
+ * ### 将 element 实际化
  * @type {IMElementRenderFn}
  */
-export function createElement(type, initProps, ...children) {
-  console.log("createElement type:", type);
+export function createJuttedElement(type, initProps, ...children) {
   if (typeof type === "function") {
-    type(initProps, ...children);
-    throw new Error("TODO: 暂时不会出现这种情况");
+    console.log("FC:", type.name);
+
+    return type(initProps, ...children);
   }
+
+  console.log("IC", `${type}${initProps?.id ? `#${initProps.id}` : ""}`);
 
   return {
     type,
@@ -20,24 +23,26 @@ export function createElement(type, initProps, ...children) {
       ...initProps,
       children: children.map((/** @type {IMElement | string} */ child) => {
         // hoist, 将 纯字符串 提升到 文本节点
-        if (typeof child === "string") {
-          return createTextNode(child);
+        if (typeof child === "string" || typeof child === "number") {
+          return createTextNode(child.toString());
         }
 
+        // 特殊的元素
         switch (child.type) {
-          // ps: 暂时不会出现这种情况
-          case "TEXT_NODE": {
-            console.log("createTextNode, what?");
-            return createTextNode(child.props.nodeValue);
-          }
+          /* 不会出现这种情况 */
+          // case "TEXT_ELEMENT": {
+          //   console.log("TextNode, what?");
+          //   return createTextNode(child.props.nodeValue);
+          // }
 
-          case "COMMENT_NODE": {
-            return createComment(child.props.nodeValue);
-          }
+          // case "COMMENT_ELEMENT": {
+          //   return createComment(child.props.nodeValue);
+          // }
 
-          case "FRAGMENT_NODE": {
-            return createDocumentFragment(child.props.children);
-          }
+          // case "FRAGMENT_ELEMENT": {
+          //   console.log("DocumentFragment, what?");
+          //   return createDocumentFragment(child.props.children);
+          // }
 
           default: {
             return child;
@@ -54,7 +59,7 @@ export function createElement(type, initProps, ...children) {
  */
 function createTextNode(text) {
   return {
-    type: "TEXT_NODE",
+    type: "TEXT_ELEMENT",
     props: {
       nodeValue: text,
       children: [],
@@ -68,7 +73,7 @@ function createTextNode(text) {
  */
 function createComment(text) {
   return {
-    type: "COMMENT_NODE",
+    type: "COMMENT_ELEMENT",
     props: {
       nodeValue: text,
       children: [],
@@ -77,7 +82,7 @@ function createComment(text) {
 }
 
 /**
- * @desc Fragment FRAGMENT_NODE
+ * @desc Fragment FRAGMENT_ELEMENT
  * @experimental unfinished!
  * @param {IMElement[]} children
  * @return {IMElement}
@@ -88,9 +93,22 @@ function createDocumentFragment(children) {
   }
 
   return {
-    type: "FRAGMENT_NODE",
+    type: "FRAGMENT_ELEMENT",
     props: {
       children,
     },
   };
 }
+
+/**
+ * @param {null} _
+ * @param  {IMElement[]} children
+ * @returns {IMElement}
+ */
+export const DocumentFragment = (_ = null, ...children) => {
+  console.log("FRAGMENT_ELEMENT", ...children);
+  return createDocumentFragment(children);
+};
+
+export const Comment = createComment;
+export const TextNode = createTextNode;

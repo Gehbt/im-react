@@ -1,21 +1,14 @@
 {
-  "extends": "./jsconfig.lib.json",
+  "extends": "./tsconfig.lib.json",
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
     "jsx": "preserve",
+    "noEmit": true,
     "allowArbitraryExtensions": true,
     "verbatimModuleSyntax": true,
     "declaration": true,
-    "types": [
-      "vitest/globals"
-    ]
+    "types": ["vitest/globals"]
   },
-  "include": [
-    "core",
-    "src",
-    "examples",
-    "tests",
-    "indep"
-  ]
+  "include": ["core", "src", "examples", "tests", "indep"]
 }

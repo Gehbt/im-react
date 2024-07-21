@@ -7,8 +7,6 @@
     "strict": true,
     "checkJs": true,
     "esModuleInterop": true,
-    "jsx": "preserve",
-    "jsxFactory": "createElement",
     "noEmit": true,
     "allowSyntheticDefaultImports": true,
     "allowArbitraryExtensions": true,
@@ -18,12 +16,8 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "~core/*": [
-        "./core/*"
-      ]
+      "@/*": ["./src/*"],
+      "~core/*": ["./core/*"]
     }
-  },
+  }
 }

@@ -3,7 +3,7 @@ import path from "node:path";
 import { defineConfig } from "rolldown";
 
 export default defineConfig({
-  input: "src/main.js",
+  input: "src/main.jsx",
   plugins: [],
   output: {
     banner: "// @ts-nocheck",

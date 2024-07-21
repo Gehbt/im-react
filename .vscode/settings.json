@@ -2,8 +2,10 @@
   "cSpell.words": [
     "camelcase",
     "IMDOM",
+    "IMFC",
     "indep",
     "linebreak",
+    "rolldown",
     "Vdom"
   ],
   "editor.formatOnSave": true,

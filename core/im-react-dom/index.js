@@ -1,14 +1,14 @@
-import { fiberRender as IMRender } from "../im-react/render";
+import { fibrosisRender as IMRender } from "../im-react";
 
 /**
- * @param {HTMLElement} container
+ * @param {HTMLElement | React.JSX.Element} container
  */
 const createRoot = (container) => ({
   /**
-   * @param {IMElement} App
+   * @param {IMElement | React.JSX.Element} App
    */
   render(App) {
-    IMRender(App, container); // eslint-disable-line new-cap
+    IMRender(/** @type {*} */ (App), /** @type {*} */ (container)); // eslint-disable-line new-cap
   },
 });
 const IMReactDOM = {

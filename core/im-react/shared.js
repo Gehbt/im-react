@@ -1,3 +1,6 @@
+/**
+ * @desc metadata of render
+ */
 class Renderer {
   /** ************************* */
   // 全局变量
@@ -12,5 +15,8 @@ class Renderer {
   root = undefined;
   /** ************************* */
 }
-
-export { Renderer };
+/**
+ * @type {(...args: any[])=> any} type - description
+ */
+const noop = () => {};
+export { Renderer, noop };

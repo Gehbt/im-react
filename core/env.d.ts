@@ -1,16 +1,18 @@
-declare global {
-  type CustomDomType = "FRAGMENT_NODE" | "COMMENT_NODE" | "TEXT_NODE";
 
-  type AnyFunction = (...args: any[]) => any;
-  type InitPropType = { [x: PropertyKey]: any; id: string } | null; // eslint-disable-line @typescript-eslint/ban-types
+declare global {
+  type CustomDomType = "FRAGMENT_ELEMENT" | "COMMENT_ELEMENT" | "TEXT_ELEMENT";
+  type IMDomType = CustomDomType | (string & NonNullable<unknown>);
+  type IMFunctionComponent = (...args: any[]) => IMElement;
+  type InitPropType = { [x: PropertyKey]: any; children: IMElement[] };
   type IMElement = {
-    type: string;
-    props: { [x: PropertyKey]: any; children: IMElement[] };
+    type: string | ((props?: Record<string, unknown>) => IMElement);
+    props: InitPropType;
+    key?: string;
   };
 
   type IMElementRenderFn = (
-    type: string | AnyFunction,
-    initProps: InitPropType,
+    type: string | IMFunctionComponent,
+    initProps: InitPropType | null, // eslint-disable-line @typescript-eslint/ban-types
     ...children: IMElement[] | string[]
   ) => IMElement;
 
@@ -23,6 +25,13 @@ declare global {
     sibling?: VDomElementTreeNode;
     child?: VDomElementTreeNode;
   } & IMElement;
+
+  // // via dom-chef
+  // interface JSXElementClassDocumentFragment extends DocumentFragment, JSX.ElementClass { }
+  // interface Fragment {
+  //   prototype: JSXElementClassDocumentFragment;
+  //   new(): JSXElementClassDocumentFragment;
+  // }
 }
 
 export { };
