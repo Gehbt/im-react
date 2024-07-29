@@ -3,7 +3,10 @@ declare global {
   type CustomDomType = "FRAGMENT_ELEMENT" | "COMMENT_ELEMENT" | "TEXT_ELEMENT";
   type IMDomType = CustomDomType | (string & NonNullable<unknown>);
   type IMFunctionComponent = (...args: any[]) => IMElement;
-  type InitPropType = { [x: PropertyKey]: any; children: IMElement[] };
+  type InitPropType = {
+    [k: string]: any;
+    children?: IMElement[];
+  };
   type IMElement = {
     type: string | ((props?: Record<string, unknown>) => IMElement);
     props: InitPropType;
@@ -33,5 +36,5 @@ declare global {
   //   new(): JSXElementClassDocumentFragment;
   // }
 }
-
+type Falsy = 0n | 0 | undefined | null | false | ""; // eslint-disable-line @typescript-eslint/ban-types
 export { };

@@ -1,0 +1,49 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`render im-element in jsdom > App 1`] = `
+<div
+  id="root"
+>
+  <!-- 123 -->
+  <p>
+     Hi trans by vite
+  </p>
+  <div
+    id="next"
+  >
+    <p>
+       Hi trans by vite next?
+    </p>
+  </div>
+  <span>
+    Fragments
+  </span>
+  <p>
+    FragmentL1
+  </p>
+  <p>
+    FragmentL2
+  </p>
+  <p>
+    Fragment2
+  </p>
+  <hr />
+  <div
+    id="counter"
+  >
+    <button
+      id="counter-button"
+    >
+       +1 
+    </button>
+    <span>
+       count: 
+      10
+       
+    </span>
+    <button>
+       -1 
+    </button>
+  </div>
+</div>
+`;

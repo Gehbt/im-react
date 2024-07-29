@@ -6,6 +6,7 @@ import { Renderer } from "./shared.js";
  */
 
 /**
+ * 入口
  * Scheduler（调度器）—— 调度任务的优先级，高优任务优先进入 Reconciler；
  * export only test
  * @param {Renderer} renderer
@@ -20,12 +21,12 @@ export function fiberLoop(renderer, timeRemaining) {
   // 必须有后一项
   while (!shouldYield && renderer.nextFiberUnit) {
     // task
-    /*@__PURE__*/ console.log(
-      "task",
-      renderer.taskId,
-      "timeRemaining",
-      timeRemaining,
-    );
+    // /*@__PURE__*/ console.log(
+    //   "task",
+    //   renderer.taskId,
+    //   "timeRemaining",
+    //   timeRemaining,
+    // );
     renderer.nextFiberUnit = preformFiberUnit(renderer.nextFiberUnit);
     shouldYield = timeRemaining < 1;
   }
@@ -49,11 +50,10 @@ export function fiberLoop(renderer, timeRemaining) {
  * ## 渲染 FiberUnit
  */
 function preformFiberUnit(fiber) {
-  // console.log("---");
   if (typeof fiber.type === "function") {
-    updateFunctionComponent(fiber);
+    updateFunctionComponent(fiber.type, fiber);
   } else {
-    updateHostComponent(fiber);
+    updateHostComponent(fiber.type, fiber);
   }
 
   // 4 返回下一个任务，子级
@@ -76,35 +76,42 @@ function preformFiberUnit(fiber) {
 }
 
 /**
- *
+ * @param {((props?: Record<string, unknown>) => IMElement)} fc
  * @param {VDomElementTreeNode} fiber
  */
-function updateFunctionComponent(fiber) {
+function updateFunctionComponent(fc, fiber) {
   // ! assert as function
-  const fc = /** @type {((props?: Record<string, unknown>) => IMElement)} */ (
-    fiber.type
-  );
   const children = [fc(fiber.props)];
 
   initChildren(fiber, children);
 }
 
 /**
- *
+ * @param {string} hc
  * @param {VDomElementTreeNode} fiber
  */
-function updateHostComponent(fiber) {
+function updateHostComponent(hc, fiber) {
   // 1 创建 dom
   if (!fiber.dom) {
     // ! assert as string
-    const hc = /** @type {string} */ (fiber.type);
-    fiber.dom = createDom(hc, fiber.props);
+    if (hc === "FRAGMENT_ELEMENT") {
+      let fiberParent = fiber.parent;
+      while (!fiberParent?.dom) {
+        fiberParent = fiberParent?.parent;
+      }
+
+      fiber.dom = fiberParent?.dom;
+    } else {
+      fiber.dom = createDom(hc, fiber.props);
+    }
+
     // 2 处理 props
     updateProps(fiber.dom, fiber.props);
   }
 
+  // console.log("fiber.dom", fiber.dom);
   // 3 转换 child 链表，设置指针
-  initChildren(fiber, fiber.props.children);
+  initChildren(fiber, fiber.props?.children);
 }
 
 /**
@@ -131,11 +138,12 @@ function commitFiber(fiber) {
     fiberParent = fiberParent?.parent;
   }
 
-  if (fiber.dom) {
-    // console.log(fiberParent.type, "<-", fiber.type);
+  if (fiber.dom && fiber.dom !== fiberParent?.dom) {
+    console.log(fiberParent.type, "<-", fiber.type);
+    // console.log(fiberParent.dom, "<-", fiber.dom);
 
     fiberParent?.dom?.append(/** @type {Node} */ (fiber.dom));
-  } else {
+  } else if (fiber.dom !== fiberParent?.dom) {
     console.warn("fiber dom is undefined");
   }
 
@@ -144,10 +152,12 @@ function commitFiber(fiber) {
 }
 
 /**
- * @param {{ [x: string]: any; children: any }} dom
- * @param {{ [x: string]: any; children: any }} props
+ * @param {{ [x: string]: any; }} dom
+ * @param {{ [x: string]: any; }} props
  * @return {void}
  */
+// #FIXME
+// 当 render 一个 Fragment 且 children 为 Text_Element 时 这里的 props 为 null, Object.keys(null) 报错
 const updateProps = (dom, props) => {
   Object.keys(props).forEach((key) => {
     if (key !== "children") {
@@ -163,7 +173,7 @@ const updateProps = (dom, props) => {
  * @return { void }
  * ## 插入队列
  */
-function initChildren(fiber, children) {
+function initChildren(fiber, children = []) {
   /** @type {VDomElementTreeNode | undefined} prevChild */
   let prevChild;
   children.forEach((child, index) => {

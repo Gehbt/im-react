@@ -10,12 +10,12 @@
  */
 export function createJuttedElement(type, initProps, ...children) {
   if (typeof type === "function") {
-    console.log("FC:", type.name);
+    // console.log("FC:", type.name);
 
     return type(initProps, ...children);
   }
 
-  console.log("IC", `${type}${initProps?.id ? `#${initProps.id}` : ""}`);
+  // console.log("IC", `${type}${initProps?.id ? `#${initProps.id}` : ""}`);
 
   return {
     type,
@@ -27,27 +27,7 @@ export function createJuttedElement(type, initProps, ...children) {
           return createTextNode(child.toString());
         }
 
-        // 特殊的元素
-        switch (child.type) {
-          /* 不会出现这种情况 */
-          // case "TEXT_ELEMENT": {
-          //   console.log("TextNode, what?");
-          //   return createTextNode(child.props.nodeValue);
-          // }
-
-          // case "COMMENT_ELEMENT": {
-          //   return createComment(child.props.nodeValue);
-          // }
-
-          // case "FRAGMENT_ELEMENT": {
-          //   console.log("DocumentFragment, what?");
-          //   return createDocumentFragment(child.props.children);
-          // }
-
-          default: {
-            return child;
-          }
-        }
+        return child;
       }),
     },
   };
@@ -75,7 +55,7 @@ function createComment(text) {
   return {
     type: "COMMENT_ELEMENT",
     props: {
-      nodeValue: text,
+      nodeValue: ` ${text.trim()} `,
       children: [],
     },
   };
@@ -105,10 +85,22 @@ function createDocumentFragment(children) {
  * @param  {IMElement[]} children
  * @returns {IMElement}
  */
-export const DocumentFragment = (_ = null, ...children) => {
-  console.log("FRAGMENT_ELEMENT", ...children);
-  return createDocumentFragment(children);
-};
+export const DocumentFragment = (_ = null, ...children) =>
+  createDocumentFragment(children);
 
-export const Comment = createComment;
+/**
+ *
+ * @param {{text:string} } props
+ * @returns {React.JSX.Element}
+ */
+export const CommentNode = (props) =>
+  /** @type {*} */ (createComment(props.text));
 export const TextNode = createTextNode;
+/**
+ *
+ * @param {string | IMFunctionComponent } type
+ * @returns
+ */
+export function h(type) {
+  return createJuttedElement(type, {});
+}

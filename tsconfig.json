@@ -10,5 +10,5 @@
     "declaration": true,
     "types": ["vitest/globals"]
   },
-  "include": ["core", "src", "examples", "tests", "indep"]
+  "include": ["core", "src", "examples", "tests", "indep", "./vitest.setup.ts"]
 }

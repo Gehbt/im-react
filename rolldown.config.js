@@ -14,6 +14,8 @@ export default defineConfig({
     exports: "named",
   },
   external: ["react", "react-dom"],
+  cwd: import.meta.dirname,
+  treeshake: true,
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),

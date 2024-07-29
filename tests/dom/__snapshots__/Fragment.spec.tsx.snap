@@ -1,0 +1,39 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Fragment > single Fragment 1`] = `
+<div
+  id="app"
+>
+  <p>
+    Fragment
+  </p>
+  <p>
+    Fragment2
+  </p>
+</div>
+`;
+
+exports[`Fragment > single Fragment nested 1`] = `
+<div
+  id="app"
+>
+  <p>
+    Fragment
+  </p>
+  <p>
+    Fragment2
+  </p>
+  <p>
+    FragmentL2
+  </p>
+  <p>
+    Fragment2L2
+  </p>
+  <p>
+    FragmentL3
+  </p>
+  <p>
+    Fragment2L3
+  </p>
+</div>
+`;

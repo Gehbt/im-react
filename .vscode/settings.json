@@ -1,6 +1,7 @@
 {
   "cSpell.words": [
     "camelcase",
+    "endregion",
     "IMDOM",
     "IMFC",
     "indep",
@@ -16,4 +17,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
+  "workbench.colorTheme": "One Dark Pro Mix"
 }

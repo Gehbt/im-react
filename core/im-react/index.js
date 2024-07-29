@@ -1,5 +1,13 @@
 import { fiberLoop } from "./fiber.js";
 import { Renderer } from "./shared.js";
+import {
+  createJuttedElement as createElement,
+  h,
+  CommentNode,
+  TextNode,
+  DocumentFragment as Fragment,
+} from "./createElement.js";
+
 /**
  * Starter
  * @param { IMElement } el
@@ -11,7 +19,7 @@ export function fibrosisRender(el, container) {
   const renderer = new Renderer();
   renderer.nextFiberUnit = {
     dom: container,
-    type: "div",
+    type: "FRAGMENT_ELEMENT", // 这里应该改为 FRAGMENT_ELEMENT
     props: {
       children: [el],
     },
@@ -23,10 +31,20 @@ export function fibrosisRender(el, container) {
   });
 }
 
-export { fibrosisRender as render };
 export {
-  createJuttedElement as createElement,
   DocumentFragment as Fragment,
-  Comment,
+  createJuttedElement as createElement,
+  h,
+  CommentNode,
   TextNode,
 } from "./createElement.js";
+
+const IMReact = {
+  render: fibrosisRender,
+  Fragment,
+  createElement,
+  h,
+  CommentNode,
+  TextNode,
+};
+export { IMReact as default, fibrosisRender as render };

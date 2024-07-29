@@ -25,3 +25,5 @@ dist-ssr
 
 *.ipynb
 coverage
+
+examples/*.js

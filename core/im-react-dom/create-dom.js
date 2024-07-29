@@ -14,9 +14,9 @@ export function createDom(type, props) {
     }
 
     case "FRAGMENT_ELEMENT": {
-      return /** @type {*} */ (document.createElement("div"));
-      // 有坑：需要在 DocumentFragment 完成提交之后才能提交到父节点 (appendChild)
-      //  而当前是顺序的逐级插入
+      return /** @type {*} */ (document.createDocumentFragment());
+      // 有坑：DocumentFragment 需要在完全完成 (append) 提交之后才能提交到父节点 (appendChild)
+      // 在插入后，往 DocumentFragment 的插入操作会失败
       // return /** @type {*} */ (document.createDocumentFragment());
     }
 

@@ -15,4 +15,4 @@ const IMReactDOM = {
   createRoot,
 };
 //* export
-export default IMReactDOM;
+export { IMReactDOM as default, createRoot };

@@ -46,12 +46,14 @@ const Pow = ({ exponent }, base) => (base ?? 0) ** exponent;
 export const Hypotenuse = ({ a, b }) =>
   /** @type {*} 把 jsx 默认的类型消除 */ (
     (
-      <Sqrt>
-        <Sum>
-          <Pow exponent={2}>{a}</Pow>
-          <Pow exponent={2}>{b}</Pow>
-        </Sum>
-      </Sqrt>
+      <div>
+        <Sqrt>
+          <Sum>
+            <Pow exponent={2}>{a}</Pow>
+            <Pow exponent={2}>{b}</Pow>
+          </Sum>
+        </Sqrt>
+      </div>
     )
   );
 

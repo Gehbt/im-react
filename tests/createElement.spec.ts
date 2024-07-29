@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from "vitest";
-import React from "~core/mini-react/React";
+import { createElement } from "~core/im-react";
 
 describe("createElement", () => {
   it("should return vdom element no props", () => {
-    const element = React.createElement("div", null, "hello");
+    const element = createElement("div", null, "hello");
     expect(element).toMatchInlineSnapshot(/* json */ `
       {
         "props": {
@@ -24,7 +24,7 @@ describe("createElement", () => {
   });
   it("should return vdom element with props", () => {
     // <div id="root">hello</div>;
-    const element = React.createElement("div", { id: "root" }, "hello");
+    const element = createElement("div", { id: "root" }, "hello");
     expect(element).toMatchInlineSnapshot(/* json */ `
       {
         "props": {
