@@ -81,11 +81,11 @@ function createDocumentFragment(children) {
 }
 
 /**
- * @param {null} _
+ * @param {NonNullable<unknown>} _
  * @param  {IMElement[]} children
  * @returns {IMElement}
  */
-export const DocumentFragment = (_ = null, ...children) =>
+export const DocumentFragment = (_ = {}, ...children) =>
   createDocumentFragment(children);
 
 /**
@@ -95,11 +95,15 @@ export const DocumentFragment = (_ = null, ...children) =>
  */
 export const CommentNode = (props) =>
   /** @type {*} */ (createComment(props.text));
+/**
+ * @param {string} text
+ * @returns {IMElement}
+ */
 export const TextNode = createTextNode;
 /**
  *
  * @param {string | IMFunctionComponent } type
- * @returns
+ * @returns {IMElement}
  */
 export function h(type) {
   return createJuttedElement(type, {});

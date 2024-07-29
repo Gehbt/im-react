@@ -156,8 +156,6 @@ function commitFiber(fiber) {
  * @param {{ [x: string]: any; }} props
  * @return {void}
  */
-// #FIXME
-// 当 render 一个 Fragment 且 children 为 Text_Element 时 这里的 props 为 null, Object.keys(null) 报错
 const updateProps = (dom, props) => {
   Object.keys(props).forEach((key) => {
     if (key !== "children") {
