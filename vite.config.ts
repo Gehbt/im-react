@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 import inspect from 'vite-plugin-inspect';
 
 const pathResolve = (dir: string) =>
-  resolve(import.meta.dirname, ".", dir);
+  resolve(__dirname, ".", dir); // eslint-disable-line unicorn/prefer-module
 export const alias = {
   "@": pathResolve("src"),
   "~core": pathResolve("core"),
