@@ -1,3 +1,5 @@
+"use quirks";
+
 /**
  *
  * @param {{className: string,num: number}} props

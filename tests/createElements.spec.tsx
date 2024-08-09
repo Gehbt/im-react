@@ -10,11 +10,6 @@ describe("createElements by jsx", () => {
         <App></App>
       </div>
     );
-    // window.requestIdleCallback = vi.fn((cb) => {
-    //   cb({ timeRemaining: () => 50, didTimeout: false });
-    //   return 50;
-    // });
-    // IMReactDOM.createRoot(div).render(App);
     expect(div).toMatchInlineSnapshot(/* json */ `
       {
         "props": {
@@ -40,5 +35,41 @@ describe("createElements by jsx", () => {
         "type": "div",
       }
     `);
+  });
+  test("JSX Spread Attributes", () => {
+    const withSpreadAttr = (
+      <div
+        {...{
+          className: "fragment",
+          style: {
+            display: "flex",
+          },
+        }}
+        className="fragment-override"
+      >
+        JSX Spread Attributes
+      </div>
+    );
+    expect(withSpreadAttr).toMatchInlineSnapshot(/* json */ `
+      {
+        "props": {
+          "children": [
+            {
+              "props": {
+                "children": [],
+                "nodeValue": "JSX Spread Attributes",
+              },
+              "type": "TEXT_ELEMENT",
+            },
+          ],
+          "className": "fragment-override",
+          "style": {
+            "display": "flex",
+          },
+        },
+        "type": "div",
+      }
+    `);
+    expect(withSpreadAttr.props.className).toBe("fragment-override");
   });
 });

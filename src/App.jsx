@@ -15,7 +15,15 @@ function App() {
       </div>
       <span>Fragments</span>
       <>
-        <p>Fragment</p>
+        <p
+          {...{
+            style: {
+              alignItems: "inherit",
+            },
+          }}
+        >
+          Fragment
+        </p>
         <>
           <p>FragmentL2</p>
           <p>Fragment2</p>
