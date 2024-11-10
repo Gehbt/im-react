@@ -17,5 +17,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
-  "workbench.colorTheme": "One Dark Pro Mix"
+  "workbench.colorTheme": "One Dark Pro Mix",
+  "prettier.enable": false
 }

@@ -5,6 +5,7 @@ class Renderer {
   /** ************************* */
   // 全局变量
   #taskId = 1;
+
   get taskId() {
     return this.#taskId;
   }
@@ -41,7 +42,7 @@ class Renderer {
   /** ************************* */
 }
 /**
- * @type {(...args: any[])=> any} type - description
+ * @type {(...args: any[])=> any}
  */
 const noop = () => {};
 export { Renderer, noop };

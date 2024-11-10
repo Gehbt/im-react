@@ -8,7 +8,7 @@ export default mergeConfig(
       setupFiles: ['./vitest.setup.ts'],
       root: import.meta.dirname,
       environment: "jsdom",
-      exclude: ["**/node_modules/**"],
+      exclude: ["**/node_modules/*"],
       globals: true, // config types: "vitest/globals"
       reporters: ["verbose"],
       coverage: {

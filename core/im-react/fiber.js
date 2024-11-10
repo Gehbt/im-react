@@ -139,7 +139,7 @@ function commitFiber(fiber) {
   }
 
   if (fiber.dom && fiber.dom !== fiberParent?.dom) {
-    console.log(fiberParent.type, "<-", fiber.type);
+    console.log(fiberParent.type, "->", fiber.type);
     // console.log(fiberParent.dom, "<-", fiber.dom);
 
     fiberParent?.dom?.append(/** @type {Node} */ (fiber.dom));
