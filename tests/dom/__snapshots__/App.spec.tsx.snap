@@ -29,10 +29,10 @@ exports[`render im-element in jsdom > App 1`] = `
   </p>
   <hr />
   <div
-    id="counter"
+    class="counter"
   >
     <button
-      id="counter-button"
+      class="counter-button-plus"
     >
        +1 
     </button>
@@ -41,7 +41,9 @@ exports[`render im-element in jsdom > App 1`] = `
       10
        
     </span>
-    <button>
+    <button
+      class="counter-button-minus"
+    >
        -1 
     </button>
   </div>

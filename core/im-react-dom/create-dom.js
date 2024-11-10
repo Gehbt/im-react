@@ -13,6 +13,7 @@ export function createDom(type, props) {
       return /** @type {*} */ (document.createComment(props.nodeValue));
     }
 
+    /* v8 ignore next 6 - because SKIP FRAGMENT_ELEMENT */
     case "FRAGMENT_ELEMENT": {
       return /** @type {*} */ (document.createDocumentFragment());
       // 有坑：DocumentFragment 需要在完全完成 (append) 提交之后才能提交到父节点 (appendChild)

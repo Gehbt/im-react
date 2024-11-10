@@ -47,4 +47,5 @@ const IMReact = {
   CommentNode,
   TextNode,
 };
-export { IMReact as default, fibrosisRender as render };
+export default IMReact;
+export { fibrosisRender as render };

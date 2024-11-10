@@ -3,10 +3,10 @@ import { CommentNode } from "~core/im-react";
 export default function App() {
   function Counter(props: { className: string; num: number }) {
     return (
-      <div id={props.className}>
-        <button id={`${props.className}-button`}> +1 </button>
+      <div className={props.className}>
+        <button className={`${props.className}-button-plus`}> +1 </button>
         <span> count: {props.num} </span>
-        <button> -1 </button>
+        <button className={`${props.className}-button-minus`}> -1 </button>
       </div>
     );
   }

@@ -21,7 +21,7 @@ export function fiberLoop(renderer, timeRemaining) {
   // 必须有后一项
   while (!shouldYield && renderer.nextFiberUnit) {
     // task
-    // /*@__PURE__*/ console.log(
+    //  console.log(
     //   "task",
     //   renderer.taskId,
     //   "timeRemaining",

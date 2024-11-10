@@ -1,5 +1,5 @@
 import { defineConfig, mergeConfig } from "vitest/config";
-import viteConfig from "./vite.config";
+import viteConfig from "./vite.config.js";
 
 export default mergeConfig(
   viteConfig,
@@ -8,11 +8,11 @@ export default mergeConfig(
       setupFiles: ['./vitest.setup.ts'],
       root: import.meta.dirname,
       environment: "jsdom",
-      exclude: ["**/node_modules/*"],
+      // exclude: ["**/node_modules/*"],
       globals: true, // config types: "vitest/globals"
       reporters: ["verbose"],
       coverage: {
-        include: ["src/**/*.jsx", "src/**/*.js", "core/**/*.js"],
+        include: ["core/**/*.js"],
         exclude: ["./src/trash"],
         provider: "v8",
         reporter: ["text", "html"],

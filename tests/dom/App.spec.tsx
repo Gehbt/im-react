@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import App from "./fixtures/App";
+import App from "./fixtures/App.js";
 import IMReactDOM from "~core/im-react-dom";
 
 suite("render im-element in jsdom", () => {

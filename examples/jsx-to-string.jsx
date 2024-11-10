@@ -1,3 +1,4 @@
+#!/usr/bin/env tsx
 /** @jsxFrag Fragment */
 const Fragment = Symbol("Fragment");
 /** @jsx jsx_toString */
