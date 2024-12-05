@@ -1,0 +1,8 @@
+:root{
+  --a: left;
+}
+li:has(a:is(:hover, :focus-visible)) {anchor-name: --a; }
+ul::before {
+  left: anchor(--a left);
+  width: anchor-size(--a width);
+}

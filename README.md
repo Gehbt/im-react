@@ -1,7 +1,9 @@
-# IM-React a.k.a. mini-react
+# IM-React 
 
 > You Think You're a ...?
 > Yes.I think **IM**.
+
+a.k.a. mini-react
 
 ```mermaid
   flowchart LR

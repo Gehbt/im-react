@@ -18,5 +18,11 @@
     "source.fixAll": "explicit"
   },
   "workbench.colorTheme": "One Dark Pro Mix",
-  "prettier.enable": false
+  "prettier.enable": false,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "samverschueren.linter-xo"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "samverschueren.linter-xo"
+  }
 }
