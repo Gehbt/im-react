@@ -8,7 +8,8 @@
     "allowArbitraryExtensions": true,
     "verbatimModuleSyntax": true,
     "declaration": true,
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals"],
+    "customConditions": ["import","require"]
   },
   "include": ["core", "src", "examples", "tests", "indep", "./vitest.setup.ts"]
 }

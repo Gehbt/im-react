@@ -29,3 +29,4 @@ coverage
 examples/*.js
 
 core-bundle
+*.tsbuildinfo

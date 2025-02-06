@@ -90,7 +90,7 @@ export const DocumentFragment = (_ = {}, ...children) =>
 
 /**
  *
- * @param {{text:string} } props
+ * @param {{text:string}} props
  * @returns {React.JSX.Element}
  */
 export const CommentNode = (props) =>
